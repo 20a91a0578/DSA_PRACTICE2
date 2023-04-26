@@ -632,7 +632,8 @@ class Solution {
 
 64: Spiral Matrix : https://leetcode.com/problems/spiral-matrix/
 
-class Solution {
+class Solution
+ {
     public List<Integer> spiralOrder(int[][] a) {
         ArrayList<Integer> b=new ArrayList<Integer>();
          int i;
