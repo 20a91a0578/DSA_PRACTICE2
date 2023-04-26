@@ -1,0 +1,739 @@
+26. Longest Palindromic Substring--Description:  https://leetcode.com/problems/longest-palindromic-substring/
+
+27.Median of Two Sorted Arrays :https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+import java.util.*;
+class Solution {
+    public double findMedianSortedArrays(int[] n1, int[] n2) {
+        int ne[]=new int[n1.length+n2.length];
+        int n=n1.length+n2.length;
+        int i=0;
+        double d=0;
+        System.arraycopy(n1, 0, ne, 0,n1.length);
+        System.arraycopy(n2, 0, ne, n1.length, n2.length);
+        Arrays.sort(ne);
+      
+        if(ne.length%2!=0)
+        {
+            d=ne[(ne.length)/2];
+        }
+        else{
+            d=(double)(ne[(ne.length)/2]+ne[((ne.length)/2)-1])/2;
+        }
+return d;
+    }
+}
+
+
+28.Regular Expression Matching : https://leetcode.com/problems/regular-expression-matching/
+
+29.Letter Combinations of a Phone Number : https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+class Solution {
+    List<String> s = new ArrayList<>();
+    String[] l = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    public List<String> letterCombinations(String digits) {
+        if (digits.length() == 0) {
+            return new ArrayList<>();
+        }
+        comb(0, digits, digits.length(), "");
+        return s;
+    }
+
+    void comb(int i, String d, int n, String k) {
+        if (i == n) {
+            s.add(k);
+            return;
+        }
+        int x = d.charAt(i) - '0';
+        for (char c : l[x].toCharArray()) {
+            comb(i + 1, d, n, k + c);
+        }
+    }
+}
+
+
+30: Longest Common Prefix: https://leetcode.com/problems/longest-common-prefix/
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+        String k = strs[0];
+        String j = strs[strs.length - 1];
+        String l = "";
+        int p = Math.min(k.length(), j.length());
+        for (int i = 0; i < p; i++) {
+            if (k.charAt(i) != j.charAt(i)) {
+                break;
+            } else {
+                l += k.charAt(i);
+            }
+        }
+        return l;
+    }
+}
+
+
+31: Valid Parentheses1: https://leetcode.com/problems/valid-parentheses/
+
+class Solution {
+    public boolean isValid(String s) {
+        
+        Stack<Character> d = new Stack<>();
+        for(int i=0;i<s.length();i++)
+        {
+            char c=s.charAt(i);
+            if(c=='{' || c=='(' || c=='[')
+            d.push(c);
+            else{
+                if(d.empty())
+                return false;
+               else if(c==')' && d.peek()!='(')
+                return false;
+                else if(c==']' && d.peek()!='[')
+                return false;
+                else if(c=='}' && d.peek()!='{')
+                return false;
+                else
+                d.pop();
+            }
+        }
+        return d.empty();
+    }
+}
+
+
+32: Generate Parentheses : https://leetcode.com/problems/generate-parentheses/
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> v = new ArrayList<>();
+        genera(n, 0, 0, v, "");
+        return v;
+    }
+
+    void genera(int n, int o, int c, List<String> v, String s) {
+        if (n == o && n == c) {
+            v.add(s);
+            return;
+        }
+        if (o < n) {
+            genera(n, o + 1, c, v, s + '(');
+        }
+        if (c < o) {
+            genera(n, o, c + 1, v, s + ')');
+        }
+    }
+}
+
+
+33: Merge k Sorted Lists:  https://leetcode.com/problems/merge-k-sorted-lists/description/
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        List<Integer> v = new ArrayList<>();
+        for (ListNode p : lists) {
+            while (p != null) {
+                v.add(p.val);
+                p = p.next;
+            }
+        }
+        ListNode pt = new ListNode(-1);
+        ListNode q = pt;
+        Collections.sort(v);
+        for (int i : v) {
+            ListNode l = new ListNode(i);
+            pt.next = l;
+            pt = l;
+        }
+        return q.next;
+    }
+}
+
+34: Swap Nodes in Pairs : https://leetcode.com/problems/swap-nodes-in-pairs/
+
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        List<Integer> v = new ArrayList<>();
+        ListNode p = head;
+        while (p != null) {
+            v.add(p.val);
+            p = p.next;
+        }
+        for (int i = 0; i < v.size() - 1; i += 2) {
+            int t = v.get(i);
+            v.set(i, v.get(i + 1));
+            v.set(i + 1, t);
+        }
+        p = head;
+        for (int i = 0; i < v.size(); i++) {
+            p.val = v.get(i);
+            p = p.next;
+        }
+        return head;
+    }
+}
+
+
+ 35: Reverse Nodes in k-Group : https://leetcode.com/problems/reverse-nodes-in-k-group/
+
+ class Solution {
+    ListNode rev = new ListNode(-1);
+    ListNode f = rev;
+
+    public ListNode reverse(ListNode head) {
+        ListNode ne = null;
+        ListNode c = head;
+        ListNode pr = null;
+        while (c != null) {
+            ne = c.next;
+            c.next = pr;
+            pr = c;
+            c = ne;
+        }
+        return pr;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode p = head;
+        while (p != null) {
+            ListNode dummy = new ListNode(-1);
+            ListNode fg = dummy;
+            for (int i = 0; i < k; i++) {
+                if (p == null) {
+                    f.next = dummy.next;
+                    return rev.next;
+                }
+                fg.next = new ListNode(p.val);
+                fg = fg.next;
+                p = p.next;
+            }
+            ListNode j = reverse(dummy.next);
+            f.next = j;
+            while (f.next != null) {
+                f = f.next;
+            }
+        }
+        return rev.next;
+    }
+}
+
+36:  Remove Duplicates from Sorted Array : https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        int i = 0;
+        int j[]=new int[set.size()];
+        for (int num : set) {
+            j[i++] = num;
+        }
+        Arrays.sort(j);
+        i=0;
+        for(int num:j)
+        {
+            nums[i++]=num;
+        }
+        return set.size();
+    }
+}
+
+
+37: Remove Element: https://leetcode.com/problems/remove-element/
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val) {
+                nums[i++] = nums[j];
+            }
+        }
+        return i;
+    }
+}
+
+
+ 38: Find the Index of the First Occurrence in a String: https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+
+ class Solution {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+}
+
+39: Divide Two Integers : https://leetcode.com/problems/divide-two-integers/
+
+class Solution {
+    public int divide(int d, int b) {
+        int h = d / b;
+        if(d==Integer.MIN_VALUE && b==-1)
+        return Integer.MAX_VALUE;
+        if (h < Integer.MIN_VALUE) {
+            
+            return Integer.MIN_VALUE;
+        }
+        if (h > Integer.MAX_VALUE) {
+            
+            return Integer.MAX_VALUE;
+        }
+        
+        return h;
+    }
+}
+
+
+40: Substring with Concatenation of All Words : https://leetcode.com/problems/substring-with-concatenation-of-all-words/
+
+
+
+41: Next Permutation : https://leetcode.com/problems/next-permutation/
+
+
+42: Longest Valid Parentheses: https://leetcode.com/problems/longest-valid-parentheses/
+
+43: Search in Rotated Sorted Array : https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int size = nums.length;
+        int i =0;
+        int j = size-1;
+        while(i<=j){
+        if(nums[i]==target){
+            return i;
+        }
+        else if(nums[j]==target){
+            return j;
+        }
+        else if(nums[i]+nums[j]>target){
+            j--;
+        }
+        else if(nums[i]+nums[j]<target){
+            i++;
+        }
+        else if(nums[i]+nums[j]==target){
+            i++;
+            j--;
+        }
+        }
+
+        return -1;
+    }
+}
+
+44: Find First and Last Position of Element in Sorted Array : https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int i = 0, j = nums.length - 1;
+        int[] v = new int[2];
+        v[0]=-1;
+        v[1]=-1;
+        while (i < nums.length) {
+            if (nums[i] != target) {
+                i++;
+            } else {
+                v[0] = i;
+                break;
+            }
+        }
+        while (j >= 0) {
+            if (nums[j] != target) {
+                j--;
+            } else {
+                v[1] = j;
+                break;
+            }
+        }
+        
+        return v;
+    }
+}
+
+45: Search Insert Position : https://leetcode.com/problems/search-insert-position/
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target || nums[i] > target) {
+                return i;
+            }
+        }
+        return nums.length;
+    }
+}
+
+ 46: Valid Sudoku : https://leetcode.com/problems/valid-sudoku/
+
+ 47: Sudoku Solver : https://leetcode.com/problems/sudoku-solver/
+
+ 48: Count and Say : https://leetcode.com/problems/count-and-say/
+
+
+ 49: Combination Sum : https://leetcode.com/problems/combination-sum/
+
+ class Solution {
+    public List<List<Integer>> combinationSum(int[] c, int t) {
+        List<List<Integer>> v = new ArrayList<>();
+        subsets(0, c, c.length, new ArrayList<>(), t, v);
+        return v;
+    }
+
+    void subsets(int i, int[] c, int n, List<Integer> k, int t, List<List<Integer>> v) {
+        if (i == n) {
+            if (t == 0) {
+                v.add(new ArrayList<>(k));
+            }
+            return;
+        }
+        if (c[i] <= t) {
+            k.add(c[i]);
+            subsets(i, c, n, k, t - c[i], v);
+            k.remove(k.size() - 1);
+        }
+        subsets(i + 1, c, n, k, t, v);
+    }
+}
+
+50: Combination Sum II : https://leetcode.com/problems/combination-sum-ii/
+
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] c, int t) {
+        Arrays.sort(c);
+        List<List<Integer>> v = new ArrayList<>();
+        List<Integer> ds = new ArrayList<>();
+        subsets(0, c, c.length, v, ds, t);
+        return v;
+    }
+
+    void subsets(int ind, int[] c, int n, List<List<Integer>> v, List<Integer> ds, int t) {
+        if (t == 0) {
+            v.add(new ArrayList<>(ds));
+            return;
+        }
+        for (int i = ind; i < n; i++) {
+            if (i > ind && c[i] == c[i - 1]) {
+                continue;
+            }
+            if (c[i] > t) {
+                break;
+            }
+            ds.add(c[i]);
+            subsets(i + 1, c, n, v, ds, t - c[i]);
+            ds.remove(ds.size() - 1);
+        }
+    }
+}
+
+51: First Missing Positive :https://leetcode.com/problems/first-missing-positive/
+
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        Set<Integer> a = new HashSet<>();
+        for (int num : nums) {
+            a.add(num);
+        }
+        for (int i = 1; i <= nums.length; i++) {
+            if (!a.contains(i)) {
+                return i;
+            }
+        }
+        return nums.length + 1;
+    }
+}
+
+52: Trapping Rain Water : https://leetcode.com/problems/trapping-rain-water/
+
+53: Multiply Strings : https://leetcode.com/problems/multiply-strings/
+
+import java.math.BigInteger;
+class Solution {
+    public String multiply(String num1, String num2) {
+        return new BigInteger(num1).multiply(new BigInteger(num2)).toString();
+    }
+}
+
+54: Wildcard Matching : https://leetcode.com/problems/wildcard-matching/
+
+55: Jump Game II : https://leetcode.com/problems/jump-game-ii/
+
+56: Permutations : https://leetcode.com/problems/permutations/
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> list = new ArrayList<Integer>();
+        int[] taken = new int[nums.length];
+        permutations(0, nums, taken, res, list);
+        return res;
+    }
+    public void permutations(int index, int[] arr, int[] taken,List<List<Integer>> res, List<Integer> list){
+        if(list.size() == arr.length){
+            res.add(new ArrayList<>(list));
+            return;
+        }
+
+        for(int i = 0;i < arr.length;i++){
+            if(taken[i] == 0){
+
+                taken[i] = 1;
+                list.add(arr[i]);
+                permutations(i + 1, arr, taken, res, list);
+                list.remove(list.size() - 1);
+                taken[i] = 0;
+            }
+        }
+    }
+}
+
+57: Permutations II : https://leetcode.com/problems/permutations-ii/
+
+class Solution {
+    int N;
+    List<List<Integer>> res;
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        res = new ArrayList<>();
+        N = nums.length;
+        Arrays.sort(nums);
+        helper(nums,new ArrayList<Integer>(),new ArrayList<Integer>());
+        return res;
+    }
+    
+    public void helper(int[] nums,List<Integer> curr,List<Integer> consumed){
+        if(curr.size() == N){
+            res.add(new ArrayList<Integer>(curr));
+        }
+        
+        for(int i=0;i<N;i++){
+            if(!consumed.contains(i)){
+                curr.add(nums[i]);
+                consumed.add(i);
+                helper(nums,curr,consumed);
+                curr.remove(curr.size()-1);
+                consumed.remove(consumed.size()-1);
+                while(i<N-1 && nums[i] == nums[i+1]){
+                        i++;
+                }
+            }
+        }
+    }
+}
+
+58: Rotate Image:  https://leetcode.com/problems/rotate-image/
+
+59: Group Anagrams : https://leetcode.com/problems/group-anagrams/
+  
+60: Pow(x, n) : https://leetcode.com/problems/powx-n/
+
+class Solution {
+    public double myPow(double x, int n) {
+        double s = Math.pow(x, n);
+        return (double) Math.round(s * 100000d) / 100000d;
+    }
+}
+
+61: N-Queens : https://leetcode.com/problems/n-queens/
+
+class Solution {
+  public List<List<String>> solveNQueens(int n) {
+    boolean[][] board = new boolean[n][n];
+    List<List<String>> answer = new ArrayList<>();
+    queens(board,0,answer);
+    return answer;
+}
+void queens(boolean[][] board,int row,List<List<String>> answer){
+    
+    if(row==board.length){
+        List<String> res = insert(board);
+        answer.add(res);
+        return;
+    }
+    
+    for(int col=0;col<board.length;col++){
+       
+        if(isSafe(board,row,col)){
+            board[row][col] = true;
+            queens(board,row+1,answer); //Recursive call
+            board[row][col] = false;    // Backtrack
+        }
+    }
+}
+
+boolean isSafe(boolean[][] board, int row ,int col){
+    
+
+    for(int i=0;i<row;i++){
+        if(board[i][col])
+            return false;
+    }
+    
+
+    int maxLeft = Math.min(row,col);
+    for(int i=1;i<=maxLeft;i++){
+        if(board[row-i][col-i]){
+            return false;
+        }
+    }
+    
+ 
+    int maxRight = Math.min(row,board.length-col-1);
+    for(int i=1;i<=maxRight;i++){
+        if(board[row-i][col+i]){
+            return false;
+        }
+    }
+    return true;
+}
+ 
+  List<String> insert(boolean[][] board){
+      
+    List<String> ans = new ArrayList<>();
+    for(boolean[] row: board){
+        String S = "";
+        for(boolean element:row){
+            if(element){
+                S += "Q";
+            }
+            else
+                S += ".";
+        }
+        ans.add(S);
+    }
+      return ans;
+}
+}
+
+62: N-Queens II : https://leetcode.com/problems/n-queens-ii/
+
+63: Maximum Subarray : https://leetcode.com/problems/maximum-subarray/
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+       int msf=nums[0];
+        int men=0;
+        for(int i=0;i<nums.length;i++)
+        {
+            men=men+nums[i];
+            if(msf<men)
+                msf=men;
+            if(men<0)
+                men=0;
+        }
+    
+    return msf;}
+}
+
+64: Spiral Matrix : https://leetcode.com/problems/spiral-matrix/
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] a) {
+        ArrayList<Integer> b=new ArrayList<Integer>();
+         int i;
+         int k=0;
+int top=0,down=a.length-1,left=0,right=a[0].length-1;
+int dir=0;
+while(top<=down && left<=right)
+{
+if(dir==0)
+{
+for(i=left;i<=right;i++)
+{
+    b.add(a[top][i]);
+}
+top+=1;
+}
+else if(dir==1)
+{
+for(i=top;i<=down;i++)
+{
+    b.add(a[i][right]);
+    k+=1;
+}
+right-=1;
+}
+else if(dir==2)
+{
+for(i=right;i>=left;i--)
+{
+    b.add(a[down][i]);
+    k+=1;
+}
+down-=1;
+}
+else if(dir==3)
+{
+for(i=down;i>=top;i--)
+{
+    b.add(a[i][left]);
+    k+=1;
+}
+left+=1;
+}
+dir=(dir+1)%4;
+}
+return b;
+    }
+}
+
+65: Jump Game : https://leetcode.com/problems/jump-game/
+
+ 67: Insert Interval : https://leetcode.com/problems/insert-interval/
+
+ 68: Length of Last Word : https://leetcode.com/problems/length-of-last-word/
+
+ class Solution {
+    public int lengthOfLastWord(String s) {
+     String k[] = s.split(" ");
+     return k[k.length-1].length();  
+    }
+}
+
+ 69: Spiral Matrix II : https://leetcode.com/problems/spiral-matrix-ii/
+
+ 70: Permutation Sequence : https://leetcode.com/problems/permutation-sequence/
+
+  71: Rotate List : https://leetcode.com/problems/rotate-list/
+
+  class Solution {
+    public ListNode rotate(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode ptr = head;
+        ListNode pre = head;
+        while (ptr.next != null) {
+            pre = ptr;
+            ptr = ptr.next;
+        }
+        pre.next = null;
+        ptr.next = head;
+        head = ptr;
+        return head;
+    }
+    
+    public ListNode rotateRight(ListNode head, int k) {
+        ListNode p = head;
+        if (head == null) return head;
+        int c = 0;
+        while (p != null) {
+            c += 1;
+            p = p.next;
+        }
+        k = k % c;
+        for (int i = 0; i < k; i++) head = rotate(head);
+        return head;
+    }
+}
+
+  72: Unique Paths : https://leetcode.com/problems/unique-paths/
+
+  73: Unique Paths II : https://leetcode.com/problems/unique-paths-ii/
+
+  74: Minimum Path Sum : https://leetcode.com/problems/minimum-path-sum/
+
+  75: Valid Number : https://leetcode.com/problems/valid-number/
